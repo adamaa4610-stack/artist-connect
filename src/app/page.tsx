@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ArtistCard from '@/components/artists/ArtistCard';
 import ContentCard from '@/components/content/ContentCard';
+import { Hero3DSection, Gallery3DSection } from '@/components/three/Dynamic3D';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,11 +25,16 @@ export default async function HomePage() {
     console.error('DB error on home page:', e);
   }
 
+  const galleryPieces = recentContent.slice(0, 8).map(c => ({
+    id: c.id, title: c.title, artistName: c.artist?.displayName || 'Unknown',
+    fileUrl: c.fileUrl, contentType: c.contentType,
+  }));
+
   return (
     <div>
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/10" />
-        <div className="container mx-auto px-4 relative">
+      <section className="relative py-20 md:py-32 overflow-hidden min-h-[600px] flex items-center">
+        <Hero3DSection />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
               Discover <span className="text-primary">Artists</span> & Their Work
@@ -62,6 +68,13 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {galleryPieces.length > 0 && (
+        <section className="container mx-auto px-4 py-12">
+          <h2 className="text-2xl font-bold mb-8">Featured in 3D</h2>
+          <Gallery3DSection pieces={galleryPieces} />
+        </section>
+      )}
 
       <section className="container mx-auto px-4 py-12">
         <div className="flex items-center justify-between mb-8">

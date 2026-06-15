@@ -1,0 +1,20 @@
+---
+name: threejs-3d
+description: Framework and styling rules for building high-quality, responsive 3D web graphics, models, and animations using React Three Fiber.
+license: MIT
+compatibility: opencode
+---
+
+## What I do
+- Install and configure Three.js, `@react-three/fiber`, and `@react-three/drei` dynamically.
+- Build production-grade 3D canvases, orbit controls, and camera setups for React/Next.js.
+- Implement high-fidelity environment lighting (ambient, directional, point lights) and shadow maps.
+- Integrate 3D model loaders (`.gltf` and `.glb`) with dynamic performance loading states.
+
+## When to use me
+Use this skill whenever the user asks to add 3D scenes, immersive interactive objects, digital artwork showcases, or complex 3D rendering interfaces inside the application.
+
+## Implementation Rules
+1. Never default to generic setups; ensure cinematic framing, proper exposure, and soft shadows.
+2. Maintain application performance by using dynamic imports and standard Next.js suspension for heavy 3D canvases.
+3. Keep all 3D canvas containers completely responsive (`w-full h-full`).
