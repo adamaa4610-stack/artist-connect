@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -20,6 +20,11 @@ export default function MessagesList({ conversations, userId }: { conversations:
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [reply, setReply] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => { router.refresh(); }, 30000);
+    return () => clearInterval(interval);
+  }, [router]);
 
   const selected = conversations.find(c => c.id === selectedId);
   const otherUser = selected ? (selected.senderId === userId ? selected.receiver : selected.sender) : null;

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import ContentCard from '@/components/content/ContentCard';
+import AlbumCard from '@/components/albums/AlbumCard';
 import FollowButton from '@/components/artists/FollowButton';
 import { MapPin, Globe, ExternalLink } from 'lucide-react';
 
@@ -14,6 +15,7 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
 
   let artist: any = null;
   let artistContent: any[] = [];
+  let albums: any[] = [];
   let followerCount = 0;
   let followingCount = 0;
 
@@ -22,8 +24,9 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
     if (raw) {
       const { passwordHash: _, ...rest } = raw;
       artist = rest;
-      [artistContent, followerCount, followingCount] = await Promise.all([
+      [artistContent, albums, followerCount, followingCount] = await Promise.all([
         db.query.content.findMany({ where: eq(schema.content.artistId, Number(id)), orderBy: (c: any, { desc }: any) => desc(c.createdAt), limit: 20 }),
+        db.query.albums.findMany({ where: eq(schema.albums.artistId, Number(id)), orderBy: (a: any, { desc }: any) => desc(a.createdAt) }),
         db.$count(schema.follows, eq(schema.follows.followingId, Number(id))),
         db.$count(schema.follows, eq(schema.follows.followerId, Number(id))),
       ]);
@@ -103,6 +106,17 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
           </div>
         )}
       </section>
+
+      {albums.length > 0 && (
+        <section className="mt-8">
+          <h2 className="text-lg font-semibold mb-4">Albums ({albums.length})</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {albums.map(album => (
+              <AlbumCard key={album.id} album={album} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

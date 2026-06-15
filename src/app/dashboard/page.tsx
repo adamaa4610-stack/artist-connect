@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import ContentCard from '@/components/content/ContentCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, Settings, MessageSquare } from 'lucide-react';
+import { Upload, Settings, MessageSquare, FolderOpen } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,6 +45,7 @@ export default async function DashboardPage() {
         <div className="flex gap-2">
           <Button variant="outline" asChild><Link href="/upload"><Upload className="h-4 w-4 mr-1" />Upload</Link></Button>
           <Button variant="outline" asChild><Link href="/messages"><MessageSquare className="h-4 w-4 mr-1" />Messages</Link></Button>
+          <Button variant="outline" asChild><Link href="/dashboard/albums"><FolderOpen className="h-4 w-4 mr-1" />Albums</Link></Button>
           <Button variant="outline" asChild><Link href="/dashboard/settings"><Settings className="h-4 w-4 mr-1" />Settings</Link></Button>
         </div>
       </div>

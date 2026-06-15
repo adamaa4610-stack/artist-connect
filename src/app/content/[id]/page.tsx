@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import LikeButton from '@/components/content/LikeButton';
 import CommentSection from '@/components/content/CommentSection';
+import AddToAlbumButton from '@/components/albums/AddToAlbumButton';
 import { Eye, Heart, Calendar } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -83,6 +84,9 @@ export default async function ContentPage({ params }: { params: Promise<{ id: st
           </div>
 
           <LikeButton contentId={Number(id)} />
+          <div className="mt-2">
+            <AddToAlbumButton contentId={Number(id)} artistId={artist.id} />
+          </div>
         </div>
       </div>
 

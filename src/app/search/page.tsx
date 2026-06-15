@@ -2,33 +2,33 @@ import { searchAll, searchContent, searchArtists } from '@/lib/search';
 import ArtistCard from '@/components/artists/ArtistCard';
 import ContentCard from '@/components/content/ContentCard';
 import SearchFilters from '@/components/search/SearchFilters';
-import type { InferSelectModel } from 'drizzle-orm';
-import type * as schema from '../../../drizzle/schema';
-
-type User = InferSelectModel<typeof schema.users>;
-type Content = InferSelectModel<typeof schema.content>;
+import PaginationBar from '@/components/search/PaginationBar';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const params = await searchParams;
   const tab = params.type || 'all';
+  const page = Number(params.page) || 1;
+  const limit = tab === 'all' ? 10 : 20;
   let artists: any[] = [];
   let contentResults: any[] = [];
 
   try {
     if (tab === 'all') {
-      const results = await searchAll(params);
+      const results = await searchAll({ ...params, page, limit });
       artists = results.artists;
       contentResults = results.content;
     } else if (tab === 'artist') {
-      artists = await searchArtists(params);
+      artists = await searchArtists({ ...params, page, limit });
     } else {
-      contentResults = await searchContent(params);
+      contentResults = await searchContent({ ...params, page, limit });
     }
   } catch (e) {
     console.error('Search DB error:', e);
   }
+
+  const hasMore = (tab === 'all' ? contentResults.length : contentResults.length || artists.length) >= limit;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -71,6 +71,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           </div>
         )}
       </div>
+
+      <PaginationBar page={page} hasMore={hasMore} />
     </div>
   );
 }
